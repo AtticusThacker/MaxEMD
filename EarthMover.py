@@ -25,8 +25,8 @@ class point:
         # used if point is red
         self.u =  math.inf # min weight on edges in the complete bipartite graph
         # used if point is blue
-        self.v = math.inf
-        self.p = 0
+        self.v = 0
+        self.p = math.inf
     
     # Set the color of a point
     def setColor(self, color):
@@ -112,8 +112,17 @@ def setU(reds, blues):
                 red.u = min_u
 
 # Hungarian Algorithm Implementation
+#currently for MAX matching, not min; let's wait to fix that tbh idek how this version works yet
+#TODO: 1. restructure this so that we're doing it with iteration and maybe helpers,
+#       instead of with gotos
+#      2. Write out what we're actually doing and why?
+#      3. Write real code lol
+#      4. Make it min-matching, maybe literally just by reciprocating distance measurements.
 def matchPoints(reds, blues):
     # Step 0
+    #for each red point set u to the weight of the highest weight edge
+    #for each blue point, set v=0 and p to positive infinity 
+
     setU(reds, blues)
     X = [] # set of tuples 
 
@@ -162,6 +171,15 @@ def matchPoints(reds, blues):
     ####################################
     # STEP 3: CHANGE IN DUAL VARIABLES #
     ####################################
+    #We have X, and X covers all the vertices.
+    #Find delta1, the minimum u for red points. 
+    #Find delta2, the minimum (nonzero) p for blue points
+    #Find delta, the minimum of delta1 and delta2
+    #Subtract delta from each u for red points:
+    #Add delta to each p for blue points where p = 0,
+    #and subtract delta from each p for labeled blue points with p > 0.
+    #if delta < delta1, go to step 1.1.
+    #Otherwise, X is a maximum weight matching
     
 
 #def matchPoints(reds, blues):
